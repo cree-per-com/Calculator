@@ -19,9 +19,9 @@ public class FourBasicCalcController {
     }
 
     @PostMapping("/four-basic-calc/calcProc")
-    public ResponseEntity<Long> fourBasicCalcProc(@RequestBody CalculationData data) {
+    public ResponseEntity<Double> fourBasicCalcProc(@RequestBody CalculationData data) {
         System.out.println("Received Data : "+data);
-        Long res = fourBasicCalcService.CalcProc(data);
+        Double res = fourBasicCalcService.CalcProc(data);
         return ResponseEntity.ok(res);
     }
 

@@ -4,42 +4,27 @@ package com.example.calculator.Service.CalcService;
 import com.example.calculator.DTO.CalculationData;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class FourBasicCalcService {
-    private CalculationData data;
-    public Long CalcProc(CalculationData data) {
+    public Double CalcProc(CalculationData data) {
         String op = data.getOperator();
-        long one = data.getNum1();
-        long two = data.getNum2();
-        Long result = 0L;
+        double one = data.getNum1();
+        double two = data.getNum2();
+
         switch (op) {
             case "+" :
-                result = one+two;
-                break;
+                return one+two;
             case "-" :
-                result = one-two;
-                break;
+                return one-two;
             case "*" :
-                result = one*two;
-                break;
+                return one*two;
             case "/" :
-                if(two!=0) result = one/two;
-                else result = null;
-                break;
-            default : result = null;
+                if(two!=0) return one/two;
+                else return null;
+            default : return null;
         }
-        return result;
-        /*
-        if (op.equals("+")) return one+two;
-        else if (op.equals("-")) return one-two;
-        else if (op.equals("*")) return one*two;
-        else if (op.equals("/")) {
-            if (two!=0) return one/two;
-            else return null;
-        }
-        else return null;
-
-         */
     }
 }
 

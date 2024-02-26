@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CalculationData {
-    private long num1;
-    private long num2;
+    private double num1;
+    private double num2;
     private String operator;
 
 }
