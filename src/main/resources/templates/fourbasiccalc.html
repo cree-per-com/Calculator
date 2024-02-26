@@ -5,25 +5,53 @@
     <title>사칙연산 계산기</title>
 </head>
 <body>
-<form th:action="@{/four-basic/calc/calcProc}" method="post" id="calcForm">
+<form id="calcForm">
     <div id="inputs">
         <div>
-            <input type="number" name="num1">
+            <input type="number" name="num1" id="num1">
             <select name="operator">
                 <option value="+">+</option>
                 <option value="-">-</option>
                 <option value="*">x</option>
                 <option value="/">/</option>
             </select>
-            <input type="number" name="num2">
+            <input type="number" name="num2" id="num2">
         </div>
     </div>
     <button type="submit">계산</button>
 
-    <p id="result"></p>
+    <div id="result"></div>
 </form>
 
 <script>
+    document.getElementById("calcForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = {
+            num1: document.getElementById("num1").value,
+            num2: document.getElementById("num2").value
+        };
+
+        fetch("http://localhost:8080/four-basic-calc/calcProc", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("result").innerHTML = "서버로 데이터 전송 성공! :  " + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = "서버로 데이터 전송 실패 ㅠ: " + error.message;
+            });
+    });
 </script>
 
 </body>
