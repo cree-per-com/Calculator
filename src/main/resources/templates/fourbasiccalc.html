@@ -9,7 +9,7 @@
     <div id="inputs">
         <div>
             <input type="number" name="num1" id="num1">
-            <select name="operator">
+            <select name="operator" id="operator">
                 <option value="+">+</option>
                 <option value="-">-</option>
                 <option value="*">x</option>
@@ -29,7 +29,8 @@
 
         const formData = {
             num1: document.getElementById("num1").value,
-            num2: document.getElementById("num2").value
+            num2: document.getElementById("num2").value,
+            operator: document.getElementById("operator").value
         };
 
         fetch("http://localhost:8080/four-basic-calc/calcProc", {

@@ -1,11 +1,13 @@
 package com.example.calculator.DTO;
 
-public class CalculationData {
-    private int num1;
-    public int getNum1() {return num1;}
-    public void setNum1(int num1) {this.num1 = num1;}
+import lombok.Getter;
+import lombok.Setter;
 
-    private int num2;
-    public int getNum2() {return num2;}
-    public void setNum2(int num2) {this.num2 = num2;}
+@Getter
+@Setter
+public class CalculationData {
+    private long num1;
+    private long num2;
+    private String operator;
+
 }
