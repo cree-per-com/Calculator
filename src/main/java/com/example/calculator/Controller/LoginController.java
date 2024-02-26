@@ -1,2 +1,4 @@
-package com.example.calculator.Controller;public class LoginController {
+package com.example.calculator.Controller;
+
+public class LoginController {
 }

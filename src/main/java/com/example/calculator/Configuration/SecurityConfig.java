@@ -1,2 +1,31 @@
-package com.example.calculator.Configuration;public class SecurityConfig {
+package com.example.calculator.Configuration;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf((x)->x.disable());
+        http.authorizeHttpRequests(a-> a
+                .requestMatchers("/","/login", "/loginProc", "/join", "/joinProc", "/four-basic-calc"
+                                    ,"/programming-calc","scientific-calc","exchange-rate-calc").permitAll()
+                .requestMatchers("/mypage","/settings").hasRole("USER")
+                .anyRequest().authenticated());
+        http.formLogin(au->au.loginPage("/login")
+                .defaultSuccessUrl("/loginSuccess")
+                .loginProcessingUrl("/loginProc")
+                .permitAll());
+        return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {return new BCryptPasswordEncoder();}
 }
