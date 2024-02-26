@@ -1,30 +1,57 @@
 
 package com.example.calculator.Service.CalcService;
 
-import com.example.calculator.DTO.CalculationData;
+import com.example.calculator.Entity.CalculationData;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class FourBasicCalcService {
     public Double CalcProc(CalculationData data) {
-        String op = data.getOperator();
-        double one = data.getNum1();
-        double two = data.getNum2();
+        String datastr = data.getCalculationData();
 
-        switch (op) {
-            case "+" :
-                return one+two;
-            case "-" :
-                return one-two;
-            case "*" :
-                return one*two;
-            case "/" :
-                if(two!=0) return one/two;
-                else return null;
-            default : return null;
+        String[] arr = datastr.split("[\\+\\-\\*\\/\\(\\)]");
+        ArrayList<Double> num = new ArrayList<>();
+        Double result = 0d;
+        for(String s : arr) {
+            num.add(Double.parseDouble(s));
         }
+
+        String operatorRegex = "[\\+\\-\\*\\/\\(\\)]";
+        Pattern operatorPattern = Pattern.compile(operatorRegex);
+        Matcher operatorMatcher = operatorPattern.matcher(datastr);
+        ArrayList<String> operators = new ArrayList<>();
+        while (operatorMatcher.find()) {
+            operators.add(operatorMatcher.group());
+        }
+        for(int i=0; i<arr.length; i++) {
+            if (i == 0) {
+                result = num.get(i);
+            } else {
+                String operator = operators.get(i - 1);
+                Double operand = num.get(i);
+                switch (operator) {
+                    case "+":
+                        result += operand;
+                        break;
+                    case "-":
+                        result -= operand;
+                        break;
+                    case "*":
+                        result *= operand;
+                        break;
+                    case "/":
+                        if(operand!=0) result /= operand;
+                        else result = null;
+                        break;
+                }
+            }
+        }
+
+        return result;
     }
 }
 
