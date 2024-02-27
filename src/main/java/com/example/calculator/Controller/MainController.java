@@ -9,9 +9,11 @@ public class MainController {
     public String startPage() {
         return "start";
     }
-
     @GetMapping("/four-basic-calc")
     public String fourBasicCalc() {
         return "fourbasiccalc";
     }
+
+    @GetMapping("/bi-calc")
+    public String biCalc() {return "bicalc";}
 }

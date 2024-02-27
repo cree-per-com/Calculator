@@ -1,4 +1,4 @@
-/*
+
 package com.example.calculator.Controller.CalcController;
 
 import com.example.calculator.Entity.CalculationData;
@@ -11,21 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class BiCalcController {
-    private BiCalcService biCalcService;
+    private final BiCalcService biCalcService;
     @Autowired
     public BiCalcController(BiCalcService biCalcService) {
         this.biCalcService =biCalcService;
     }
-   @PostMapping("/programming-calc/calcProc")
-    public ResponseEntity<String> programmingCalcProc(@RequestBody CalculationData data) {
+   @PostMapping("/bi-calc/calcProc")
+    public ResponseEntity<Integer> programmingCalcProc(@RequestBody CalculationData data) {
         String datastr = data.getCalculationData();
-        Integer res = biCalcService.CalcProc(datastr);
-        String resString = "계산 결과는 이진법으로 "+String.valueOf(res) +
-                            ", 십진법으로 "+String.valueOf(Integer.toBinaryString(res))
-                            +" 입니다.";
-       return ResponseEntity.ok(resString);
+        String option = data.getCalculationOption();
+        Integer res = biCalcService.CalcProc(datastr, option);
+       return ResponseEntity.ok(res);
    }
 
 }
 
- */
+

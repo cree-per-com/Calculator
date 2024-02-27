@@ -1,4 +1,3 @@
-
 package com.example.calculator.Service.CalcService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,27 +17,24 @@ public class FourBasicCalcService {
         this.dataParsingService=dataParsingService;
     }
     public Double CalcProc(String datastr) {
-       Stack<BigDecimal> numbers = dataParsingService.getnumbersStack(datastr);
-       Stack<Character> operators = dataParsingService.getoperatorsStack(datastr);
+        Stack<BigDecimal> numbers = dataParsingService.getnumbersStack(datastr);
+        Stack<Character> operators = dataParsingService.getoperatorsStack(datastr);
 
-       int index=0;
-       while(index<datastr.length()) {
-           char ch = datastr.charAt(index);
-           if (ch == '(') {
-               operators.push(ch);
-               index++;
-           } else if (ch == ')') {
-               while (operators.peek() != '(') {
-                   BigDecimal b = numbers.pop();
-                   BigDecimal a = numbers.pop();
-                   numbers.push(performOperation(a, b, operators.pop()));
-               }
-               operators.pop(); // '(' 제거
-               index++;
-           }
-           else index++;
-       }
-       //계산 로직
+        int index=0;
+        while(index<datastr.length()) {
+            char ch = datastr.charAt(index);
+            if(ch == ')') {
+                while (operators.peek() != '(') {
+                    BigDecimal b = numbers.pop();
+                    BigDecimal a = numbers.pop();
+                    numbers.push(performOperation(a, b, operators.pop()));
+                }
+                operators.pop(); // '(' 제거
+                index++;
+            }
+            else index++;
+        }
+        //계산 로직
         while (!operators.isEmpty()) {
             BigDecimal b = numbers.pop();
             BigDecimal a = numbers.pop();
@@ -48,7 +44,7 @@ public class FourBasicCalcService {
         return numbers.pop().doubleValue();
     }
 
-
+    //연산 수행
     private BigDecimal performOperation(BigDecimal a, BigDecimal b, char operator) {
         switch (operator) {
             case '+':

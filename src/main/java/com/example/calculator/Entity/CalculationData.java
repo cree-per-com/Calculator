@@ -7,4 +7,5 @@ import lombok.Setter;
 @Setter
 public class CalculationData {
     private String calculationData;
+    private String calculationOption;
 }

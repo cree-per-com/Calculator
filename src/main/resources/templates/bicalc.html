@@ -10,13 +10,18 @@
         <div>
             <input type="text" name="calculation" id="calculation" step="0.000001">
         </div>
-
+        <div>
+            <select id="select" name="calculationOption">
+                <option value = "inttobi" name="inttobi">십진수를 이진수로</option>
+                <option value = "bitoint" name="bitoint">이진수를 십진수로</option>
+            </select>
+        </div>
     </div>
     <button type="submit">계산</button>
     <br>
+    <div>- 이진수 계산기에서는 현재 정수만 지원합니다. 소수 계산 기능은 추후 업데이트 예정입니다.</div>
     <div>- 숫자와 숫자 사이에 +,-,*,/를 넣어주세요. =는 넣지 않아도 됩니다.</div>
     <div>- 괄호는 현재 소괄호 ()만 지원됩니다. 중괄호와 대괄호는 추후 업데이트 예정입니다.</div>
-    <div>- 이진수 계산기에서는 현재 정수만 지원합니다. 소수 계산 기능은 추후 업데이트 예정입니다.</div>
     <div>- 계산 결과는 십진수로 -1.8*10^308 ~ 1.8*10^308까지 지원됩니다.</div>
     <br>
     <br>
@@ -27,10 +32,11 @@
         event.preventDefault();
 
         const formData = {
-            calculationData: document.getElementById("calculation").value
+            calculationData: document.getElementById("calculation").value,
+            calculationOption: document.getElementById("select").value
         };
 
-        fetch("http://localhost:8080/four-basic-calc/calcProc", {
+        fetch("http://localhost:8080/bi-calc/calcProc", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -44,10 +50,20 @@
                 return response.json();
             })
             .then(data => {
-                document.getElementById("result").innerHTML = "계산 결과 = " + JSON.stringify(data);
+                let result;
+                if (formData.calculationOption === "inttobi") {
+                    // Integer를 이진수로 변환
+                    result = parseInt(data).toString(2);
+                } else if (formData.calculationOption === "bitoint") {
+                    // 그대로 표시
+                    result = data;
+                } else {
+                    throw new Error("올바르지 않은 계산 옵션입니다.");
+                }
+                document.getElementById("result").innerHTML = "계산 결과 = " + result;
             })
             .catch(error => {
-                document.getElementById("result").innerHTML = "잘못된 입력입니다. 숫자와 +,-,*,/만 사용해주세요. 에러메세지 : " + error.message;
+                document.getElementById("result").innerHTML = "잘못된 입력입니다. 숫자와 +,-,*,/,(,) 만 사용해주세요. 에러메세지 : " + error.message;
             });
     });
 </script>
