@@ -14,29 +14,35 @@ import java.util.regex.Pattern;
 @Service
 public class FourBasicCalcService {
     public Double CalcProc(String datastr) {
-        // 공백 제거
+        //공백 문자가 포함되었으면 제거
         datastr = datastr.replace(" ", "");
 
-        // 스택 생성
         Stack<BigDecimal> numbers = new Stack<>();
         Stack<Character> operators = new Stack<>();
 
         int index = 0;
+        //datastr을 하나씩 읽는다
         while (index < datastr.length()) {
             char ch = datastr.charAt(index);
+            //숫자나 소수점'.'인 경우 : BigDecimal형으로 바꿔서 numbers 스택에 넣음
             if (Character.isDigit(ch) || ch == '.') {
-                StringBuilder sb = new StringBuilder();
+                StringBuffer sb = new StringBuffer();
                 while (index < datastr.length() && (Character.isDigit(datastr.charAt(index)) || datastr.charAt(index) == '.')) {
                     sb.append(datastr.charAt(index));
                     index++;
                 }
                 numbers.push(new BigDecimal(sb.toString()));
+
+                //연산자인 경우 : operators 스택에 넣음
             } else if (ch == '+' || ch == '-' || ch == '*' || ch == '/') {
                 operators.push(ch);
                 index++;
+
+                //( 괄호인 경우 : operators 스택에 넣음
             } else if (ch == '(') {
                 operators.push(ch);
                 index++;
+                //)괄호인 경우 : ()(빈괄호)가 아닐시 numbers스택에서 숫자를 꺼내서 operators스택에서 꺼낸 연산자로 계산함.
             } else if (ch == ')') {
                 while (operators.peek() != '(') {
                     BigDecimal b = numbers.pop();
@@ -67,7 +73,7 @@ public class FourBasicCalcService {
                 return a.multiply(b);
             case '/':
                 if (b.compareTo(BigDecimal.ZERO) != 0) {
-                    return a.divide(b, 10, RoundingMode.HALF_UP);
+                    return a.divide(b, 6, RoundingMode.HALF_UP);
                 } else {
                     throw new ArithmeticException("Division by zero");
                 }

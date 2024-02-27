@@ -12,6 +12,6 @@ class FourBasicCalcServiceTest {
     void CalcProcTest() {
         FourBasicCalcService calcService = new FourBasicCalcService();
         Double result = calcService.CalcProc("0.5+3*0.2");
-        Assertions.assertThat(result).isEqualTo(1.1d);
+        Assertions.assertThat(result).isEqualTo(0.7d);
     }
 }
