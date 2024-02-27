@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class FourBasicCalcController {
-    private FourBasicCalcService fourBasicCalcService;
+    private final FourBasicCalcService fourBasicCalcService;
     @Autowired
     public FourBasicCalcController(FourBasicCalcService fourBasicCalcService) {
         this.fourBasicCalcService = fourBasicCalcService;

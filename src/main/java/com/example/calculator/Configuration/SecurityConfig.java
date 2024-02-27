@@ -15,8 +15,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf((x)->x.disable());
         http.authorizeHttpRequests(a-> a
-                .requestMatchers("/four-basic-calc/**"
-                        ,"/programming-calc","scientific-calc","exchange-rate-calc").permitAll()
+                .requestMatchers("/four-basic-calc"
+                        ,"/bi-calc","scientific-calc","exchange-rate-calc").permitAll()
+                .requestMatchers("/four-basic-calc/calcProc"
+                        ,"/bi-calc/calcProc","scientific-calc/calcProc","exchange-rate-calc.calcProc").permitAll()
                 .requestMatchers("/","/login", "/loginProc", "/join", "/joinProc").permitAll()
                 .requestMatchers("/mypage","/settings").hasRole("USER")
                 .anyRequest().authenticated());

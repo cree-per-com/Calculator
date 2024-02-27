@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>프로그래밍 계산기</title>
+</head>
+<body>
+<form id="calcForm">
+    <div id="inputs">
+        <div>
+            <input type="text" name="calculation" id="calculation" step="0.000001">
+        </div>
+
+    </div>
+    <button type="submit">계산</button>
+    <br>
+    <div>- 숫자와 숫자 사이에 +,-,*,/를 넣어주세요. =는 넣지 않아도 됩니다.</div>
+    <div>- 괄호는 현재 소괄호 ()만 지원됩니다. 중괄호와 대괄호는 추후 업데이트 예정입니다.</div>
+    <div>- 이진수 계산기에서는 현재 정수만 지원합니다. 소수 계산 기능은 추후 업데이트 예정입니다.</div>
+    <div>- 계산 결과는 십진수로 -1.8*10^308 ~ 1.8*10^308까지 지원됩니다.</div>
+    <br>
+    <br>
+    <div id="result"></div>
+</form>
+<script>
+    document.getElementById("calcForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = {
+            calculationData: document.getElementById("calculation").value
+        };
+
+        fetch("http://localhost:8080/four-basic-calc/calcProc", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("네트워크 응답이 올바르지 않습니다.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("result").innerHTML = "계산 결과 = " + JSON.stringify(data);
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = "잘못된 입력입니다. 숫자와 +,-,*,/만 사용해주세요. 에러메세지 : " + error.message;
+            });
+    });
+</script>
+</body>
+</html>
