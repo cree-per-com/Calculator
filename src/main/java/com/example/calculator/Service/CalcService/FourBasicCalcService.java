@@ -21,6 +21,24 @@ public class FourBasicCalcService {
        Stack<BigDecimal> numbers = dataParsingService.getnumbersStack(datastr);
        Stack<Character> operators = dataParsingService.getoperatorsStack(datastr);
 
+       int index=0;
+       while(index<datastr.length()) {
+           char ch = datastr.charAt(index);
+           if (ch == '(') {
+               operators.push(ch);
+               index++;
+           } else if (ch == ')') {
+               while (operators.peek() != '(') {
+                   BigDecimal b = numbers.pop();
+                   BigDecimal a = numbers.pop();
+                   numbers.push(performOperation(a, b, operators.pop()));
+               }
+               operators.pop(); // '(' 제거
+               index++;
+           }
+           else index++;
+       }
+       //계산 로직
         while (!operators.isEmpty()) {
             BigDecimal b = numbers.pop();
             BigDecimal a = numbers.pop();
