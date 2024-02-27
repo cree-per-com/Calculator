@@ -9,63 +9,34 @@ import java.math.RoundingMode;
 import java.util.Stack;
 
 @Service
-public class BiCalcService{
+public class BiCalcService {
     private final DataParsingService dataParsingService;
+    private final FourBasicCalcService fourBasicCalcService;
 
     @Autowired
-    public BiCalcService(DataParsingService dataParsingService) {
-        this.dataParsingService=dataParsingService;
+    public BiCalcService(DataParsingService dataParsingService, FourBasicCalcService fourBasicCalcService) {
+        this.dataParsingService = dataParsingService;
+        this.fourBasicCalcService = fourBasicCalcService;
     }
 
     public Integer CalcProc(String datastr, String option) {
         Stack<BigDecimal> numbers = dataParsingService.getnumbersStack(datastr);
         Stack<Character> operators = dataParsingService.getoperatorsStack(datastr);
-        int index=0;
-        if(option=="bitoint") {
-            for (BigDecimal num : numbers) {
-                num = new BigDecimal(new BigInteger(String.valueOf(num), 2));
+
+        if (option.equals("bitoint")) {
+            Stack<BigDecimal> tempStack = new Stack<>();
+            while (!numbers.isEmpty()) {
+                BigDecimal num = numbers.pop(); // 스택에서 요소 추출
+                String binaryString = num.toString(); // 이진수 형식의 문자열로 변환
+                BigInteger binaryValue = new BigInteger(binaryString, 2); // 이진수 문자열을 BigInteger로 파싱
+                tempStack.push(new BigDecimal(binaryValue)); // 파싱한 값으로 새로운 BigDecimal 객체 생성하여 임시 스택에 넣음
+            }
+
+            // 임시 스택의 요소를 다시 원본 스택에 넣음
+            while (!tempStack.isEmpty()) {
+                numbers.push(tempStack.pop());
             }
         }
-        while(index<datastr.length()) {
-            char ch = datastr.charAt(index);
-            if(ch == ')') {
-                while (operators.peek() != '(') {
-                    BigDecimal b = numbers.pop();
-                    BigDecimal a = numbers.pop();
-                    numbers.push(performOperation(a, b, operators.pop()));
-                }
-                operators.pop(); // '(' 제거
-                index++;
-            }
-            else index++;
-        }
-        //계산 로직
-        while (!operators.isEmpty()) {
-            BigDecimal b = numbers.pop();
-            BigDecimal a = numbers.pop();
-            numbers.push(performOperation(a, b, operators.pop()));
-        }
-
-        return numbers.pop().intValue();
-    }
-
-    //연산 수행
-    private BigDecimal performOperation(BigDecimal a, BigDecimal b, char operator) {
-        switch (operator) {
-            case '+':
-                return a.add(b);
-            case '-':
-                return a.subtract(b);
-            case '*':
-                return a.multiply(b);
-            case '/':
-                if (b.compareTo(BigDecimal.ZERO) != 0) {
-                    return a.divide(b, 6, RoundingMode.HALF_UP);
-                } else {
-                    throw new ArithmeticException("0으로 나눌 수 없습니다.");
-                }
-            default:
-                throw new IllegalArgumentException("입력 방식이 올바르지 않아 계산 과정 중 오류가 발생했습니다.");
-        }
+        return (int)fourBasicCalcService.CalcProc(datastr, numbers, operators).doubleValue();
     }
 }

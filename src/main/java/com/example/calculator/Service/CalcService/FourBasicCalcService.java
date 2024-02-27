@@ -10,35 +10,25 @@ import java.util.Stack;
 
 @Service
 public class FourBasicCalcService {
-    private final DataParsingService dataParsingService;
-
-    @Autowired
-    public FourBasicCalcService(DataParsingService dataParsingService) {
-        this.dataParsingService=dataParsingService;
-    }
-    public Double CalcProc(String datastr) {
-        Stack<BigDecimal> numbers = dataParsingService.getnumbersStack(datastr);
-        Stack<Character> operators = dataParsingService.getoperatorsStack(datastr);
-
-        int index=0;
-        while(index<datastr.length()) {
-            char ch = datastr.charAt(index);
-            if(ch == ')') {
+    public Double CalcProc(String datastr, Stack<BigDecimal> bigDecimalStack, Stack<Character> characterStack) {
+         Stack<BigDecimal> numbers = bigDecimalStack;
+         Stack<Character> operators = characterStack;
+        //계산 로직
+        while (!operators.isEmpty()) {
+            if(operators.peek()==')') {
+                operators.pop();
                 while (operators.peek() != '(') {
                     BigDecimal b = numbers.pop();
                     BigDecimal a = numbers.pop();
                     numbers.push(performOperation(a, b, operators.pop()));
                 }
-                operators.pop(); // '(' 제거
-                index++;
+                operators.pop();
             }
-            else index++;
-        }
-        //계산 로직
-        while (!operators.isEmpty()) {
-            BigDecimal b = numbers.pop();
-            BigDecimal a = numbers.pop();
-            numbers.push(performOperation(a, b, operators.pop()));
+            else {
+                BigDecimal b = numbers.pop();
+                BigDecimal a = numbers.pop();
+                numbers.push(performOperation(a, b, operators.pop()));
+            }
         }
 
         return numbers.pop().doubleValue();
