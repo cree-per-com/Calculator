@@ -1,4 +1,4 @@
-package com.example.calculator.Repository;
+package com.example.calculator.DAO;
 
 import com.example.calculator.Entity.UserEntity;
 import org.springframework.stereotype.Repository;

@@ -1,8 +1,8 @@
 package com.example.calculator.Service;
 
-import com.example.calculator.Entity.MyUserDetails;
+import com.example.calculator.DAO.MyUserDetails;
 import com.example.calculator.Entity.UserEntity;
-import com.example.calculator.Repository.UserRepository;
+import com.example.calculator.DAO.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

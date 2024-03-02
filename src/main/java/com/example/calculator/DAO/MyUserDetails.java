@@ -1,4 +1,4 @@
-package com.example.calculator.Entity;
+package com.example.calculator.DAO;
 
 import com.example.calculator.Entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;

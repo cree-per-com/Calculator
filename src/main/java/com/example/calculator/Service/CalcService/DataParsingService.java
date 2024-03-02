@@ -3,13 +3,32 @@ package com.example.calculator.Service.CalcService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Stack;
 
 @Service
 public class DataParsingService {
+
+    public ArrayList<String> getStrarr(String datastr) {
+        ArrayList<String> strarr = new ArrayList<>();
+        StringBuilder sb = new StringBuilder(datastr);
+        while(datastr.indexOf(')')!=-1 && datastr.indexOf('(')!=-1) {
+            strarr.add(sb.substring(sb.indexOf("(")+1,sb.indexOf(")")));
+            sb.delete(sb.indexOf("("),sb.indexOf(")")+1);
+        }
+        if(datastr.indexOf(')')==-1) strarr.add(sb.toString());
+        return strarr;
+    }
+
+    public String getString(String[] strarr) {
+        String result = String.join("", strarr);
+        return result;
+    }
+
     public Stack<BigDecimal> getnumbersStack(String datastr) {
         //공백 제거
         datastr = datastr.replace(" ", "");
+
         Stack<BigDecimal> numbers = new Stack<>();
         int index = 0;
         //datastr을 하나씩 읽는다
@@ -28,6 +47,7 @@ public class DataParsingService {
             else index++;
         }
         return numbers;
+
     }
 
     public Stack<Character> getoperatorsStack(String datastr) {

@@ -1,8 +1,8 @@
 package com.example.calculator.Service;
 
-import com.example.calculator.Entity.JoinDTO;
+import com.example.calculator.DAO.JoinDTO;
 import com.example.calculator.Entity.UserEntity;
-import com.example.calculator.Repository.UserRepository;
+import com.example.calculator.DAO.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

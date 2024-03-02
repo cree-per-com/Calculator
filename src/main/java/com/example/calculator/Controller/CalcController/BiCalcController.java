@@ -1,7 +1,7 @@
 
 package com.example.calculator.Controller.CalcController;
 
-import com.example.calculator.Entity.CalculationData;
+import com.example.calculator.DAO.CalculationData;
 import com.example.calculator.Service.CalcService.BiCalcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

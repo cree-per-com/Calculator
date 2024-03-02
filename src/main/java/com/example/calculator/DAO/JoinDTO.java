@@ -1,4 +1,4 @@
-package com.example.calculator.Entity;
+package com.example.calculator.DAO;
 
 import lombok.Getter;
 import lombok.Setter;
