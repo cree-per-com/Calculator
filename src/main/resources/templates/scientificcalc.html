@@ -77,6 +77,7 @@
         <div>여기에서 위의 값들을 복사+붙여넣기하여 사칙연산할 수 있습니다.
             <input type="text" name="calculation" id="calculation">
             <button id="calcBasic">계산</button>
+            <div id="basicResult"></div>
         </div>
     </div>
 </form>
@@ -92,30 +93,34 @@
 <br>
 <br>
 </div>
-<div id="basicResult"></div>
+
 <script>
-    document.getElementById("calcCir").addEventListener("click", function() {
+    document.getElementById("calcCir").addEventListener("click", function(e) {
+        e.preventDefault();
         const type = "calcCir";
         const value1 = document.getElementById("whichcir").value;
         const value2 = document.getElementById("circular1").value;
         submitData({type: type,value1: value1, value2: value2}, "cirresult");
     });
 
-    document.getElementById("calcExpo").addEventListener("click", function() {
+    document.getElementById("calcExpo").addEventListener("click", function(e) {
+        e.preventDefault();
         const type= "calcExpo";
         const value1 = document.getElementById("expo1").value;
         const value2 = document.getElementById("expo2").value;
         submitData({type: type,value1: value1, value2: value2}, "exporesult");
     });
 
-    document.getElementById("calcLog").addEventListener("click", function() {
+    document.getElementById("calcLog").addEventListener("click", function(e) {
+        e.preventDefault();
         const type="calcLog";
         const value1 = document.getElementById("log1").value;
         const value2 = document.getElementById("log2").value;
         submitData({type: type, value1: value1, value2: value2}, "logresult");
     });
 
-    document.getElementById("calcBasic").addEventListener("click", function() {
+    document.getElementById("calcBasic").addEventListener("click", function(e) {
+        e.preventDefault();
         const type="calcBasic";
         const calculationData = document.getElementById("calculation").value;
         submitData({type: type,calculationData: calculationData}, "basicResult");

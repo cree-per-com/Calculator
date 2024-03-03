@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>환율 계산기</title>
+</head>
+<body>
+<form id="calcForm">
+    <div id="inputs">
+        <div>
+            <input type="text" name="calculation" id="calculation">
+        </div>
+    </div>
+    <button type="submit">계산</button>
+</form>
+<script>
+    document.getElementById("calcForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const formData = {
+            calculationData: document.getElementById("calculation").value
+        };
+
+        fetch("http://localhost:8080/four-basic-calc/calcProc", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("네트워크 응답이 올바르지 않습니다.");
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("result").innerHTML = data.result;
+            })
+            .catch(error => {
+                document.getElementById("result").innerHTML = "잘못된 입력입니다. 에러메세지 : " + error.message;
+            });
+    });
+</script>
+</body>
+</html>

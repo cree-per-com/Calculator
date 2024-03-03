@@ -16,4 +16,9 @@ public class MainController {
 
     @GetMapping("/bi-calc")
     public String biCalc() {return "bicalc";}
+
+    @GetMapping("/scientific-calc")
+    public String SciCalc() {
+        return "scientificcalc";
+    }
 }
