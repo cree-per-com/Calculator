@@ -4,7 +4,140 @@
     <meta charset="UTF-8">
     <title>공학용 계산기</title>
 </head>
-<body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
 
+    #calcForm {
+        text-align: center;
+        margin-top: 50px;
+    }
+
+    #inputs {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    input[type="text"] {
+        width: 300px;
+        height: 30px;
+        padding: 5px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    button[type="submit"] {
+        width: 100px;
+        height: 40px;
+        font-size: 30px;
+        background-color: #c599f1;
+        color: #090303;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+</style>
+<body>
+<form id="calcForm">
+    <div id="inputs">
+        <div>삼각함수<br>
+            <select id="whichcir" name="whichcir">
+                <option value="sin">SIN</option>
+                <option value="cos">COS</option>
+                <option value="tan">TAN</option>
+            </select>
+            <input type="text" name="circular1" id="circular1">
+            <button id="calcCir">계산</button>
+            <div id="cirresult"></div>
+            <div>* 원주율 : pi = 원주율(3.141592...)로 인식합니다.</div>
+        </div>
+        <br><br>
+        <div>지수함수<br>
+            밑 : <input type="text" name="expo1" id="expo1">
+            지수 부분 : <input type="text" name="expo2" id="expo2">
+            <button id="calcExpo">계산</button>
+            <div id="exporesult"></div>
+        </div>
+        <br><br>
+        <div>로그함수<br>
+            밑(로그의 밑은 0 이하의 수나 1이 될 수 없습니다) : <input type="text" name="log1" id="log1">
+            진수 : <input type="text" name="log2" id="log2">
+            <button id="calcLog">계산</button>
+            <div id="logresult"></div>
+        </div>
+        <br><br><br>
+        <div>여기에서 위의 값들을 복사+붙여넣기하여 사칙연산할 수 있습니다.
+            <input type="text" name="calculation" id="calculation">
+            <button id="calcBasic">계산</button>
+        </div>
+    </div>
+</form>
+<br>
+<div class="details">
+<div> < 공학용 계산기 사용 방법> </div>
+<br>
+<div>* 자연상수 : e = 자연상수(2.17828...)로 인식합니다.</div>
+<div>- 괄호는 현재 소괄호 ()만 지원됩니다. 중괄호와 대괄호는 추후 업데이트 예정입니다.</div>
+<div>- 곱셉 기호 *를 생략하면 정상 작동하지 않을 수 있으니 넣어주세요.</div>
+    <div>- 소수점은 0.000001까지 지원됩니다.</div>
+<div>- 계산 결과는 -1.8*10^308 ~ 1.8*10^308까지 지원됩니다.</div>
+<br>
+<br>
+</div>
+<div id="basicResult"></div>
+<script>
+    document.getElementById("calcCir").addEventListener("click", function() {
+        const type = "calcCir";
+        const value1 = document.getElementById("whichcir").value;
+        const value2 = document.getElementById("circular1").value;
+        submitData({type: type,value1: value1, value2: value2}, "cirresult");
+    });
+
+    document.getElementById("calcExpo").addEventListener("click", function() {
+        const type= "calcExpo";
+        const value1 = document.getElementById("expo1").value;
+        const value2 = document.getElementById("expo2").value;
+        submitData({type: type,value1: value1, value2: value2}, "exporesult");
+    });
+
+    document.getElementById("calcLog").addEventListener("click", function() {
+        const type="calcLog";
+        const value1 = document.getElementById("log1").value;
+        const value2 = document.getElementById("log2").value;
+        submitData({type: type, value1: value1, value2: value2}, "logresult");
+    });
+
+    document.getElementById("calcBasic").addEventListener("click", function() {
+        const type="calcBasic";
+        const calculationData = document.getElementById("calculation").value;
+        submitData({type: type,calculationData: calculationData}, "basicResult");
+    });
+
+function submitData(formData, resultId) {
+    fetch("http://localhost:8080/scientific-calc/calcProc", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json"
+    },
+        body: JSON.stringify(formData)
+    })
+    .then(response => {
+        if (!response.ok) {throw new Error("현재 네트워크 응답이 올바르지 않습니다. 문제가 계속될 경우 youngchae0104@gmail.com으로 도움을 요청하세요.");}
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById(resultId).innerHTML = "계산 결과: " + data.result;
+    }).catch(error => {
+        document.getElementById(resultId).innerHTML = "계산에 실패했습니다. 올바른 식을 입력했는지 다시 점검해주세요. " + error.message;
+    });}
+</script>
 </body>
 </html>

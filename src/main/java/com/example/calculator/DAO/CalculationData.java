@@ -8,4 +8,7 @@ import lombok.Setter;
 public class CalculationData {
     private String calculationData;
     private String calculationOption;
+    private String type;
+    private String value1;
+    private String value2;
 }

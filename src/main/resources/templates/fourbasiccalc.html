@@ -4,13 +4,57 @@
     <meta charset="UTF-8">
     <title>사칙연산 계산기</title>
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
+
+    #inputs {
+        margin-bottom: 10px;
+    }
+
+    #calculation {
+        width: 300px;
+        padding: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button[type="submit"] {
+        width: 100px;
+        height: 40px;
+        font-size: 30px;
+        background-color: #fcec45;
+        color: #090303;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .details {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    #result {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border: 1px solid #ccc;
+    }
+</style>
 <body>
 <form id="calcForm">
     <div id="inputs">
         <div>
-            <input type="text" name="calculation" id="calculation" step="0.000001">
+            <input type="text" name="calculation" id="calculation">
         </div>
     </div>
+</form>
+<div class="details">
     <button type="submit">계산</button>
     <div>- 숫자와 숫자 사이에 +,-,*,/를 넣어주세요. =는 넣지 않아도 됩니다.</div>
     <div>곱셈 기호 *를 생략하면 제대로 동작하지 않으니 꼭 넣어주세요.</div>
@@ -20,7 +64,7 @@
 <br>
     <br>
     <div id="result"></div>
-</form>
+</div>
 
 <script>
     document.getElementById("calcForm").addEventListener("submit", function(event) {
