@@ -17,10 +17,10 @@ public class BiCalcController {
         this.biCalcService =biCalcService;
     }
    @PostMapping("/bi-calc/calcProc")
-    public ResponseEntity<Integer> programmingCalcProc(@RequestBody CalculationData data) {
+    public ResponseEntity<String> programmingCalcProc(@RequestBody CalculationData data) {
         String datastr = data.getCalculationData();
         String option = data.getCalculationOption();
-        Integer res = biCalcService.CalcProc(datastr, option);
+        String res = biCalcService.CalcProc(datastr, option);
        return ResponseEntity.ok(res);
    }
 

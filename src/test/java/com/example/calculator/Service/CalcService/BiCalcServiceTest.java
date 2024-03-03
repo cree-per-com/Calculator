@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class BiCalcServiceTest {
     @Test
     void calcProcTest() {
-        BiCalcService biCalcService = new BiCalcService(new DataParsingService(), new FourBasicCalcService());
-        String datastr = "1010+10";
-        String option = "bitoint";
-        Integer result = biCalcService.CalcProc(datastr,option);
-        Assertions.assertThat(result).isEqualTo(12);
+        BiCalcService biCalcService = new BiCalcService(new FourBasicCalcService());
+        String datastr = "1+2";
+        String option = "inttobi";
+        String result = biCalcService.CalcProc(datastr,option);
+        Assertions.assertThat(result).isEqualTo("11");
     }
 }
