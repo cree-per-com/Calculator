@@ -1,5 +1,6 @@
 package com.example.calculator.Service.CalcService;
 
+import com.example.calculator.DAO.CalculationDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,8 @@ import java.util.stream.Collectors;
 @Service
 public class FourBasicCalcService {
 
+    private CalculationDataRepository calculationDataRepository;
+    public FourBasicCalcService(CalculationDataRepository calculationDataRepository) {this.calculationDataRepository=calculationDataRepository;}
     private static int precedence(char op) {
         int res = 0;
         if (op == '+' || op == '-') res= 1;

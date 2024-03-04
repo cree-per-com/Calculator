@@ -4,7 +4,7 @@ import com.example.calculator.Entity.UserEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity,Integer>{
+public interface UserRepository extends JpaRepository<UserEntity,Long>{
     boolean existsByUsername(String username);
     UserEntity findByUsername(String username);
 }

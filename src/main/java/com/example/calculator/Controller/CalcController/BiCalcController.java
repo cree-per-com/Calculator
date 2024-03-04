@@ -1,7 +1,7 @@
 
 package com.example.calculator.Controller.CalcController;
 
-import com.example.calculator.DAO.CalculationData;
+import com.example.calculator.DAO.CalculationDTO;
 import com.example.calculator.Service.CalcService.BiCalcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class BiCalcController {
         this.biCalcService =biCalcService;
     }
    @PostMapping("/bi-calc/calcProc")
-    public ResponseEntity<String> programmingCalcProc(@RequestBody CalculationData data) {
+    public ResponseEntity<String> programmingCalcProc(@RequestBody CalculationDTO data) {
         String datastr = data.getCalculationData();
         String option = data.getCalculationOption();
         String res = biCalcService.CalcProc(datastr, option);

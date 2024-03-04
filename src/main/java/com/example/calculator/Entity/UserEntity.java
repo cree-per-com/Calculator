@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(unique=true)
     private String username;

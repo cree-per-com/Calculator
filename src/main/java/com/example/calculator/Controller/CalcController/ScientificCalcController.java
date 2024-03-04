@@ -1,15 +1,13 @@
 package com.example.calculator.Controller.CalcController;
 
-import com.example.calculator.DAO.CalculationData;
+import com.example.calculator.DAO.CalculationDTO;
 import com.example.calculator.Service.CalcService.FourBasicCalcService;
 import com.example.calculator.Service.CalcService.ScientificCalcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +25,7 @@ public class ScientificCalcController {
 
 
     @PostMapping("/scientific-calc/calcProc")
-    public ResponseEntity<Map<String,String>> SciCalcProc(@RequestBody CalculationData data) {
+    public ResponseEntity<Map<String,String>> SciCalcProc(@RequestBody CalculationDTO data) {
         String type = data.getType();
         String value1="";
         String value2="";

@@ -1,5 +1,6 @@
 package com.example.calculator.Service.CalcService;
 
+import com.example.calculator.DAO.CalculationDataRepository;
 import lombok.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,6 +12,10 @@ import java.util.Scanner;
 
 @Service
 public class ExchangeRateCalcService {
+    private CalculationDataRepository calculationDataRepository;
+
+    public ExchangeRateCalcService(CalculationDataRepository calculationDataRepository) {
+        this.calculationDataRepository=calculationDataRepository;}
     private String apiKey = System.getenv("EXCHANGERATE_APIKEY");
 
     //base통화에서 target통화로 amonut만큼 환전
