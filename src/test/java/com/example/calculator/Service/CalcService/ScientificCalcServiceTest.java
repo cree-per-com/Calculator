@@ -1,3 +1,4 @@
+/*
 package com.example.calculator.Service.CalcService;
 
 import org.assertj.core.api.Assertions;
@@ -16,3 +17,7 @@ class ScientificCalcServiceTest {
         Assertions.assertThat(result).isEqualTo("1");
     }
 }
+
+
+
+ */

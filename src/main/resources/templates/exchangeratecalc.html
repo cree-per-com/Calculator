@@ -9,37 +9,49 @@
     <div id="inputs">
         <div>
             <input type="text" name="calculation" id="calculation">
+            <select id="base"name="base">
+                <option value="KRW">KRW</option>
+                <option value="USD">USD</option>
+                <option value="JPY">JPY</option>
+                <option value="CNY">CNY</option>
+                <option value="EUR">EUR</option>
+            </select>에서
+            <select id="target" name="target">
+                <option value="KRW">KRW</option>
+                <option value="USD">USD</option>
+                <option value="JPY">JPY</option>
+                <option value="CNY">CNY</option>
+                <option value="EUR">EUR</option>
+            </select>로
         </div>
     </div>
     <button type="submit">계산</button>
+    <br>
+    <div id="result"></div>
 </form>
 <script>
     document.getElementById("calcForm").addEventListener("submit", function(event) {
         event.preventDefault();
-
         const formData = {
-            calculationData: document.getElementById("calculation").value
+            calculationData: document.getElementById("calculation").value,
+            base: document.getElementById("base").value,
+            target: document.getElementById("target").value
         };
 
-        fetch("http://localhost:8080/four-basic-calc/calcProc", {
+        fetch("http://localhost:8080/exchange-rate-calc/calcProc", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(formData)
         })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("네트워크 응답이 올바르지 않습니다.");
-                }
-                return response.json();
-            })
-            .then(data => {
+            .then(res => {
+                if(!res.ok) {throw new Error("네트워크 응답이 올바르지 않습니다.");}
+                return res.json();
+            }).then(data=>{
                 document.getElementById("result").innerHTML = data.result;
-            })
-            .catch(error => {
-                document.getElementById("result").innerHTML = "잘못된 입력입니다. 에러메세지 : " + error.message;
-            });
+            }
+        ).catch(e=>{document.getElementById("result").innerHTML = "계산에 실패했습니다. 에러메세지:"+e.message;})
     });
 </script>
 </body>

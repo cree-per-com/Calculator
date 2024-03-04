@@ -24,6 +24,6 @@ public class ExchangeRateCalcService {
         Double rate = rates.get(target); //전체 환율정보중에서 target것만 뽑아냄
 
         double convertedAmount = rate * amount;
-        return String.format("환전한 결과 : %f (%s)", convertedAmount, target);
+        return String.valueOf(convertedAmount);
     }
 }
