@@ -1,7 +1,12 @@
 package com.example.calculator.Service.CalcService;
 
 import com.example.calculator.DAO.CalculationDataRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.calculator.Entity.CalculationEntity;
+import jakarta.transaction.Transactional;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,16 +19,17 @@ import java.util.stream.Collectors;
 @Service
 public class FourBasicCalcService {
 
-    private CalculationDataRepository calculationDataRepository;
+    private final CalculationDataRepository calculationDataRepository;
     public FourBasicCalcService(CalculationDataRepository calculationDataRepository) {this.calculationDataRepository=calculationDataRepository;}
     private static int precedence(char op) {
-        int res = 0;
+        int res;
         if (op == '+' || op == '-') res= 1;
         else if (op == '*' || op == '/') res= 2;
         else res = -1;
         return res;
     }
 
+    @Transactional
     public Double CalcProc(String str) {
         Stack<BigDecimal> values = new Stack<>();
         Stack<Character> operators = new Stack<>();
@@ -62,23 +68,34 @@ public class FourBasicCalcService {
         while (!operators.empty()) {
             values.push(performOperation(values.pop(), values.pop(), operators.pop()));
         }
+        //로그인한 사용자의 계산내역 저장
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
+            String username = authentication.getName();// 로그인한 사용자만 처리
+            CalculationEntity calculationEntity = new CalculationEntity();
+            calculationEntity.setUsername(username);
+            calculationEntity.setCalculator("사칙연산 계산기");
+            calculationEntity.setCalcstring(str);
+            calculationEntity.setResult(values.toString());
 
+            calculationDataRepository.save(calculationEntity); // 계산 기록을 데이터베이스에 저장
+        }
         return values.pop().doubleValue();
     }
 
     private BigDecimal performOperation(BigDecimal b, BigDecimal a, char operator) {
-        switch (operator) {
-            case '+': return a.add(b);
-            case '-': return a.subtract(b);
-            case '*': return a.multiply(b);
-            case '/':
+        return switch (operator) {
+            case '+' -> a.add(b);
+            case '-' -> a.subtract(b);
+            case '*' -> a.multiply(b);
+            case '/' -> {
                 if (b.compareTo(BigDecimal.ZERO) == 0) {
                     throw new ArithmeticException("0으로 나눌 수 없습니다.");
                 }
-                return a.divide(b, 6, RoundingMode.HALF_UP);
-            default:
-                throw new IllegalArgumentException("이 연산자는 지원되지 않습니다: " + operator);
-        }
+                yield a.divide(b, 6, RoundingMode.HALF_UP);
+            }
+            default -> throw new IllegalArgumentException("이 연산자는 지원되지 않습니다: " + operator);
+        };
     }
 }
 

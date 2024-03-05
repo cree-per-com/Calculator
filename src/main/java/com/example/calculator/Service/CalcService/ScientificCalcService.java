@@ -1,18 +1,41 @@
 package com.example.calculator.Service.CalcService;
 
+import com.example.calculator.DAO.CalculationDataRepository;
+import com.example.calculator.Entity.CalculationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ScientificCalcService {
     private FourBasicCalcService fourBasicCalcService;
+    private CalculationDataRepository calculationDataRepository;
     @Autowired
-    public ScientificCalcService(FourBasicCalcService fourBasicCalcService) {this.fourBasicCalcService=fourBasicCalcService;}
+    public ScientificCalcService(FourBasicCalcService fourBasicCalcService, CalculationDataRepository calculationDataRepository) {
+        this.fourBasicCalcService=fourBasicCalcService;
+        this.calculationDataRepository=calculationDataRepository;}
 
     public String DataParsing(String str) {
         String regex = "[+\\-*/()]";
-        if(str.matches(".*" + regex + ".*")) return fourBasicCalcService.CalcProc(str).toString();
-        else return str;
+        String result;
+        if(str.matches(".*" + regex + ".*")) result =  fourBasicCalcService.CalcProc(str).toString();
+        else result= str;
+
+        //로그인한 사용자의 계산내역 저장
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && !(authentication instanceof AnonymousAuthenticationToken)) {
+            String username = authentication.getName();// 로그인한 사용자만 처리
+            CalculationEntity calculationEntity = new CalculationEntity();
+            calculationEntity.setUsername(username);
+            calculationEntity.setCalculator("공학용 계산기");
+            calculationEntity.setCalcstring(str);
+            calculationEntity.setResult(result);
+
+            calculationDataRepository.save(calculationEntity); // 계산 기록을 데이터베이스에 저장
+        }
+        return result;
     }
 
     public String CirCalcProc(String whichcir, String circular1) {

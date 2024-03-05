@@ -9,7 +9,7 @@
     <div id="inputs">
         <div>
             <input type="text" name="calculation" id="calculation">
-            <select id="base"name="base">
+            <select id="base" name="base">
                 <option value="KRW">KRW</option>
                 <option value="USD">USD</option>
                 <option value="JPY">JPY</option>
@@ -49,9 +49,9 @@
                 if(!res.ok) {throw new Error("네트워크 응답이 올바르지 않습니다.");}
                 return res.json();
             }).then(data=>{
-                document.getElementById("result").innerHTML = data.result;
+                document.getElementById("result").innerHTML = "입력한 금액은 "+ data.result+" "+document.getElementById("target").value+" 입니다.";
             }
-        ).catch(e=>{document.getElementById("result").innerHTML = "계산에 실패했습니다. 에러메세지:"+e.message;})
+        ).catch(e=>{document.getElementById("result").innerHTML = "계산에 실패했다. 에러메세지:"+e.message;})
     });
 </script>
 </body>

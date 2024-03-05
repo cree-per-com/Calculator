@@ -18,12 +18,12 @@ public class SecurityConfig {
                 .requestMatchers("/four-basic-calc"
                         ,"/bi-calc","scientific-calc","exchange-rate-calc").permitAll()
                 .requestMatchers("/four-basic-calc/calcProc"
-                        ,"/bi-calc/calcProc","scientific-calc/calcProc","exchange-rate-calc.calcProc").permitAll()
+                        ,"/bi-calc/calcProc","scientific-calc/calcProc","exchange-rate-calc/calcProc").permitAll()
                 .requestMatchers("/","/login", "/loginProc", "/join", "/joinProc").permitAll()
                 .requestMatchers("/mypage","/settings").hasRole("USER")
                 .anyRequest().authenticated());
         http.formLogin(au->au.loginPage("/login").permitAll()
-                .defaultSuccessUrl("/loginSuccess")
+                .defaultSuccessUrl("/")
                 .loginProcessingUrl("/loginProc")
                 .permitAll());
         return http.build();

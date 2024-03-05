@@ -16,6 +16,7 @@ public class CalculationEntity {
     private Long id;
 
     private String username;
+    private String calculator;
     private String calcstring;
     private String result;
     private boolean liked;
