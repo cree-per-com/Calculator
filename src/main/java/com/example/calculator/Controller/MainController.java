@@ -74,10 +74,4 @@ public class MainController {
         model.addAttribute("username", username);
         return "liked";
     }
-    @Getter
-    @Setter
-    static class LikeRequest {
-        private String id;
-        private boolean liked;
-    }
 }
