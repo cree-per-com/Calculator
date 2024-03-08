@@ -5,11 +5,44 @@
     <title>마이페이지</title>
 </head>
 <body>
-<h3><div th:text="${username}"/>의 계산 내역</h3>
-<tr th:each="data : ${mydatalist}">
-    <td th:text="${data.getStr()}">1+1</td>
-    <td th:text="${data.getRes()}">2</td>
-    <td th:text="${data.getCal()}">2</td>
-</tr>
+<h3>
+    <div th:text="${username}"/>님의 계산 내역</h3>
+<div th:text="${username}"/> 님이 <a th:href="@{/liked}">즐겨찾기한 계산 바로가기</a>
+<br>
+<br>
+<div id="data-items">
+    <tr th:each="data, iterStat : ${mydatalist}">
+        <td th:text="${data.getStr()}">1+1</td>
+        <td th:text="${data.getRes()}">2</td>
+        <td th:text="${data.getCal()}">2</td>
+        <td>
+        <form class="like-form" th:attr="data-id=${data.getId()}">
+            <input type="checkbox" class="doeslike" name="doeslike" value="true">이 내역을 즐겨찾기에 저장
+            <button type="submit">저장</button>
+        </form>
+        </td>
+        <br>
+    </tr>
+</div>
+
+<script>
+    document.querySelectorAll('.like-form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formId = this.getAttribute('data-id');
+            const liked = this.querySelector('.doeslike').checked;
+
+            fetch('/liked', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: formId, liked: liked })
+            })
+                .then(response => response.json())
+                .catch((error) => console.log('Error:', error));
+        });
+    });
+</script>
 </body>
 </html>

@@ -17,6 +17,7 @@ public class JoinService {
     public void joinProc(JoinDTO joinDTO) {
         boolean isDuplicate = userRepository.existsByUsername(joinDTO.getUsername());
         if(isDuplicate) return;
+        if(!joinDTO.getPassword().equals(joinDTO.getPasswordcheck())) return;
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUsername(joinDTO.getUsername());

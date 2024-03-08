@@ -16,6 +16,11 @@ import java.util.Map;
 
 @Repository
 public interface CalculationDataRepository extends JpaRepository<CalculationEntity,Long> {
-    @Query(value ="SELECT DataDTO(c.username, c.calculator, c.calcstring, c.result) FROM CalculationEntity c WHERE c.username = :username")
-            List<DataDTO> findCalculationEntitiesByUsername(String username);
+    @Query(value ="SELECT new com.example.calculator.DAO.DataDTO(c.username, c.calculator, c.calcstring, c.result,c.id,c.liked) " +
+            "FROM CalculationEntity c WHERE c.username = :username")
+            List<DataDTO> UsersData(String username);
+
+    @Query(value="SELECT new com.example.calculator.DAO.DataDTO(c.username,c.calculator,c.calcstring,c.result,c.id,c.liked) FROM " +
+            "CalculationEntity c WHERE c.username = :username AND c.liked=true")
+    List<DataDTO> UsersLikedData(String username);
 }

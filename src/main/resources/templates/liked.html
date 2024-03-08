@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>내가 즐겨찾기한 계산</title>
+</head>
+<body>
+<div th:text="${username}"/> 가 즐겨찾기한 연산 식
+<tr th:each="data : ${mylikedDataList}">
+    <td th:text="${data.getStr()}">1+1</td>
+    <td th:text="${data.getRes()}">2</td>
+    <td th:text="${data.getCal()}">2</td>
+    <form action="@{/liked}" method="post">
+        <input type="checkbox" name="doeslike" value="false">즐겨찾기에서 해제
+        <button type="submit">저장</button>
+    </form>
+</tr>
+</body>
+</html>
